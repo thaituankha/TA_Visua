@@ -12,8 +12,14 @@ st.write('Chỉ số được tính bằng cách lấy số mã cổ phiếu tro
 data_streamlit = pd.read_csv('data_ta_industry.csv')
 data_streamlit['time'] = pd.to_datetime(data_streamlit['time'])
 
-data_plot = data_streamlit.tail(1000)
+#chọn 30 ngày cuối cùng
+data_streamlit['time'] = pd.to_datetime(data_streamlit['time'])
+unique_dates = data_streamlit['time'].unique() 
+train_size = len(unique_dates) - 30
+test_dates = unique_dates[train_size:]
+data_plot = data_streamlit[data_streamlit['time'].isin(test_dates)]
 
+#plot
 def plot_selected_columns(selected_columns):
     fig = make_subplots(rows=len(selected_columns), cols=1, shared_xaxes=True, subplot_titles=selected_columns)
 
